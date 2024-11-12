@@ -1,126 +1,192 @@
-import './App.css';
-import gptLogo from './assets/chatgpt.svg';
-import addBtn from './assets/add-30.png';
-import msgIcon from './assets/message.svg';
-import sendBtn from './assets/send.svg';
-import userIcon from './assets/user-icon.png';
-import gptImgLogo from './assets/chatgptLogo.svg';
-import pdf from './assets/pdf.png';
-import { useEffect, useState, useRef } from 'react';
-import { sendMsgToOpenAI_Chat } from './server';
-import pdfToText from 'react-pdftotext';
+import "./App.scss";
+import gptLogo from "./assets/chatgpt.svg";
+import addBtn from "./assets/add-30.png";
+import sendBtn from "./assets/send.svg";
+import userIcon from "./assets/user-icon.png";
+import gptImgLogo from "./assets/chatgptLogo.svg";
+import { useEffect, useState, useRef } from "react";
+import { sendMsgToOpenAI_Chat } from "./server";
+import pdfToText from "react-pdftotext";
 
 function App() {
-
   const msgEnd = useRef(null);
-
-  const [fileName, setFileName] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
   const [content, setContent] = useState("");
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
     {
-      text: 'Hi Ganda, I am OpenAI! How can I help?',
+      text: "Hi, I am your Client Relations Adviser! How can I assist you today?",
       isBot: true,
-    }
+    },
   ]);
 
+  // Load PDF content dynamically from the public folder
+  const loadPDFContent = async (user) => {
+    const pdfName = `USER_${user}.pdf`;
+    const pdfUrl = `${process.env.PUBLIC_URL}/PDF/${pdfName}`;
 
-  const extractText = (event) => {
-    const file = event.target.files[0];
-    setFileName(file.name);
-    pdfToText(file)
-      .then(text => setContent(text))
-      .catch(error => console.error("Failed to extract text from pdf. Error = " + error));
-  }
+    try {
+      const response = await fetch(pdfUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch PDF: ${response.statusText}`);
+      }
 
-  const fileData = () => {
-    if (fileName !== '') {
-      return (
-        <div>
-          <img src={pdf} alt="home" className="listItemsImg" /><p> {fileName}</p>
-        </div>
-      )
-    } else {
-      <div>
-      </div>
+      // Convert response to Blob
+      const blob = await response.blob();
+
+      // Pass the Blob to pdfToText for parsing
+      const text = await pdfToText(blob);
+
+      if (!text) {
+        throw new Error("PDF content is empty or could not be parsed.");
+      }
+
+      console.log("Extracted PDF content:", text); // Log extracted content
+      setContent(text);
+    } catch (error) {
+      console.error("Error loading PDF:", error);
+
+      // Show fallback message when PDF is not accessible
+      setContent(
+        "Sorry, the content of the PDF file is inaccessible. Please contact customer support for clarification on the contract details or request a new copy of the relevant PDF file."
+      );
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "Sorry, the content of the PDF file is inaccessible. Please contact customer support for clarification on the contract details or request a new copy of the relevant PDF file.",
+          isBot: true,
+        },
+      ]);
     }
   };
 
+  const handleUserSelect = (user) => {
+    resetChat();
 
-  const handleEnter = async (e) => {
-    if (e.key === 'Enter') await handleSend();
-  }
+    setSelectedUser(user);
+    loadPDFContent(user);
+
+    // Display greeting message specific to the selected user.
+    const greetingMessage = `Hello, User ${user}! I have loaded your contract details. How can I assist you?`;
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: greetingMessage, isBot: true },
+    ]);
+  };
 
   useEffect(() => {
     msgEnd.current.scrollIntoView();
   }, [messages]);
 
+  // Handle message send on 'Enter' key press
+  const handleEnter = async (e) => {
+    if (e.key === "Enter") await handleSend();
+  };
+
+  // Handle sending a message
   const handleSend = async () => {
+    if (!selectedUser) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "Please select a user first to start the conversation.",
+          isBot: true,
+        },
+      ]);
+      return;
+    }
+
     const text = input;
-    setInput('');
-    setMessages([
-      ...messages,
-      { text, isBot: false }
-    ]);
-    console.log("handleSend");
+
+    setInput("");
+
+    setMessages((prevMessages) => [...prevMessages, { text, isBot: false }]);
+
     const res = await sendMsgToOpenAI_Chat(text, content);
-    setMessages([
-      ...messages,
-      { text, isBot: false },
-      { text: res, isBot: true }
-    ])
-  }
 
-  const handleQuery = async (e) => {
-
-    const text = e.target.value;
-
-    console.log("handleQuery");
-    setMessages([
-      ...messages,
-      { text, isBot: false }
+    // Add the bot's response to the chat (without duplicating the user message)
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: res, isBot: true },
     ]);
-    const res = await sendMsgToOpenAI_Chat(text, content);
+  };
+
+  const resetChat = () => {
     setMessages([
-      ...messages,
-      { text, isBot: false },
-      { text: res, isBot: true }
-    ])
-  }
+      {
+        text: "Hi, I am your Client Relations Adviser! How can I assist you today?",
+        isBot: true,
+      },
+    ]);
+    setContent("");
+    setInput("");
+  };
 
   return (
     <div className="App">
-      <div className='sidebar'>
-        <div className='upperSide'>
+      <div className="sidebar">
+        <div className="upperSide">
           <div className="upperSideTop">
-            <img src={gptLogo} alt="logo" className="logo" /><span className="brand">Maria's GenAI Idea</span>
+            <img src={gptLogo} alt="logo" className="logo" />
+            <span className="brand">Welcome to Policy Pal</span>
+            <div className="description">Simplifying your Contracts</div>
           </div>
-          <button className="midBtn" onClick={() => { window.location.reload() }}><img src={addBtn} alt="" className="addBtn" />New Chat</button>
-          <div className="upperSideBottom">
-            <button className="query" onClick={handleQuery} value={"Provide a test automation out of a swagger file"}><img src={msgIcon} alt="query" />Provide a test automation out of a swagger file</button>
-            <button className="query" onClick={handleQuery} value={"How to use this OpenAI template?"}><img src={msgIcon} alt="query" />How to use this OpenAI template?</button>
-          </div>
+
+          <button className="midBtn" onClick={resetChat}>
+            <img src={addBtn} alt="" className="addBtn" />
+            New Chat
+          </button>
         </div>
-        <div className='lowerSide'>
-          <div className="listItems">Use your own files</div>
-          <input type="file" accept="application/pdf" onChange={extractText} className="uploadBtn" />
-          {fileData()}
+
+        <div className="lowerSide">
+          <div className="listItems">
+            <div className="chooseUserTitle">Choose a User</div>
+
+            <button className="userBtn" onClick={() => handleUserSelect(1)}>
+              User 1
+            </button>
+            <button className="userBtn" onClick={() => handleUserSelect(2)}>
+              User 2
+            </button>
+            <button className="userBtn" onClick={() => handleUserSelect(3)}>
+              User 3
+            </button>
+          </div>
         </div>
       </div>
-      <div className='main'>
+
+      <div className="main">
         <div className="chats">
-          {messages.map((message, i) =>
+          {messages.map((message, i) => (
             <div key={i} className={message.isBot ? "chat bot" : "chat"}>
-              <img className='chatImg' src={message.isBot ? gptImgLogo : userIcon} alt="" /><p className="txt">{message.text}</p>
+              <img
+                className="chatImg"
+                src={message.isBot ? gptImgLogo : userIcon}
+                alt=""
+              />
+              <p className="txt">{message.text}</p>
             </div>
-          )}
+          ))}
           <div ref={msgEnd} />
         </div>
+
         <div className="chatFooter">
           <div className="inp">
-            <input type="text" placeholder='Send a message' value={input} onKeyDown={handleEnter} onChange={(e) => { setInput(e.target.value) }} /><button className="send" onClick={() => handleSend()}><img src={sendBtn} alt="Send" /></button>
+            <input
+              type="text"
+              placeholder="Send a message"
+              value={input}
+              onKeyDown={handleEnter}
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <button className="send" onClick={handleSend}>
+              <img src={sendBtn} alt="Send" />
+            </button>
           </div>
-          <p>This GenAI template may produce inaccurate information about people, places or facts. For prototyping purposes only.</p>
+          <p>
+            This GenAI template may produce inaccurate information about people,
+            places, or facts. For prototyping purposes only.
+          </p>
         </div>
       </div>
     </div>
