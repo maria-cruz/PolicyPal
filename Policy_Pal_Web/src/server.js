@@ -1,9 +1,11 @@
 const { AzureOpenAI } = require("openai");
 
-const endpoint = "";
-const apiKey = "";
+
+const endpoint = "https://atcp-genai-hackathon-002.openai.azure.com/";
+const apiKey = "1445a1639d4c4a0c81fcf99728331bcd";
 const apiVersion = "2024-04-01-preview";
 const deployment = "gpt-35-turbo"; 
+
 
 export async function sendMsgToOpenAI(message) {
   const prompt = message;
