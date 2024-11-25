@@ -10,8 +10,8 @@ html {
 }
 
 body {
-    background: #0f0f1a; 
-    color: #fff;
+    background: #fff; /* Changed background to white */
+    color: #333; /* Changed text color to dark gray for contrast */
     font-family: 'Poppins', sans-serif;
     overflow: hidden; 
 }
@@ -27,8 +27,8 @@ body {
 /* Sidebar styles */
 .sidebar {
     flex: 3;
-    background: #2a2a36;
-    border-right: 1px solid #444;
+    background: #f4f4f4;
+    border-right: 1px solid #ddd; 
     padding: 2rem;
     overflow-y: auto;
 }
@@ -36,7 +36,7 @@ body {
 /* Main Content Area */
 .main {
     flex: 9;
-    background: #1f1f2e;
+    background: #f9f9f9; 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -50,11 +50,13 @@ body {
 .logo {
     height: 3rem;
     margin-right: 1rem;
+    background-color: black;
+    border-radius: 1rem;
 }
 
 .brand {
     font-size: 2.4rem;
-    color: #fff;
+    color: #333; /* Darker text for visibility */
     font-weight: 600;
 }
 
@@ -131,7 +133,7 @@ body {
     padding: 1.5rem 2rem;
     font-size: 1.4rem;
     max-width: 80%;
-    background: #2a2a36;
+    background: #f4f4f4; 
     border-radius: 8px;
     align-items: flex-start;
 }
@@ -145,12 +147,12 @@ body {
 }
 
 .bot {
-    background: #343545;
-}
+    background: #e1e1e1; /*
 
 .user {
     background: #5A4BFF; 
     align-self: flex-end; 
+    color: white; /* Ensures user text is white */
 }
 
 /* Footer */
@@ -168,7 +170,7 @@ body {
     width: 100%;
     max-width: 68rem;
     padding: 1rem;
-    background: #2a2a36;
+    background: #f4f4f4; /* Lighter background for input area */
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -180,7 +182,7 @@ body {
     background: transparent;
     border: none;
     outline: none;
-    color: white;
+    color: #333; /* Dark text for visibility */
     font-size: 1.6rem;
     padding: 1.5rem;
     width: 80%;
@@ -211,7 +213,7 @@ body {
 
 /* Styling Text */
 .txt {
-    color: rgba(222, 222, 222, 1);
+    color: #333; /* Dark text for visibility */
     line-height: 2.4rem;
 }
 
@@ -225,15 +227,15 @@ body {
 .chatFooter > p {
     margin: 2rem 0;
     font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: #666; /* Lighter gray for footer text */
     text-align: center;
 }
 
-.description{
+.description {
     font-size: 16px;
 }
 
-.upperSideTop{
+.upperSideTop {
     margin-bottom: 40px;
 }
 
@@ -258,6 +260,7 @@ body {
 
     .logo {
         height: 2.5rem;
+      
     }
 
     .brand {
@@ -346,8 +349,7 @@ body {
     }
 }
 
-
-.description{
+.description {
     font-size: 14px;
     margin-left: 40px;
 }
@@ -356,4 +358,6 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 10px;  
-  }
+}
+
+
