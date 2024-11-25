@@ -100,11 +100,19 @@ function App() {
 
     setInput("");
 
+    // Add user's message to the chat
     setMessages((prevMessages) => [...prevMessages, { text, isBot: false }]);
 
-    const res = await sendMsgToOpenAI_Chat(text, content);
+    // Send the entire conversation to OpenAI (including user and bot messages)
+    const conversation = messages.map((message) => ({
+      role: message.isBot ? "system" : "user",
+      content: message.text,
+    }));
+    conversation.push({ role: "user", content: text });
 
-    // Add the bot's response to the chat (without duplicating the user message)
+    const res = await sendMsgToOpenAI_Chat(conversation, content);
+
+    // Add the bot's response to the chat
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: res, isBot: true },
