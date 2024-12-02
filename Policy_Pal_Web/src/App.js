@@ -7,6 +7,8 @@ import gptImgLogo from "./assets/chatgptLogo.svg";
 import { useEffect, useState, useRef } from "react";
 import { sendMsgToOpenAI_Chat } from "./server";
 import pdfToText from "react-pdftotext";
+import ReactMarkdown from 'react-markdown'; 
+import remarkGfm from 'remark-gfm'; 
 
 function App() {
   const msgEnd = useRef(null);
@@ -172,7 +174,7 @@ function App() {
                 src={message.isBot ? gptImgLogo : userIcon}
                 alt=""
               />
-              <p className="txt">{message.text}</p>
+              <p className="txt"><ReactMarkdown children={message.text} remarkPlugins={[remarkGfm]} /></p>
             </div>
           ))}
           <div ref={msgEnd} />

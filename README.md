@@ -7,8 +7,12 @@
     ```bash
     npm install
     ```
+    Clone and run npm react-markdown and remark-gfm to install the dependencies for structured Text.
 
-
+    ```bash
+    npm install react-markdown
+    npm install remark-gfm
+    ```
 
 1.  **Start locally**
 
