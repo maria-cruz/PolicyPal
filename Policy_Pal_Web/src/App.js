@@ -22,9 +22,45 @@ function App() {
     },
   ]);
 
+  // Define users with placeholders for contracts
+  const userPersona = [ 
+    {
+      id: 1,
+      name: "Mia",
+      age: 20,
+      accountType: "Student Savings Account",
+      status: "Working student",
+      university: "2nd-year student at Harvard University, majoring in Biology",
+      livingSituation: "Lives 300 meters from the school and rents an apartment for $1,000 per month",
+      contract: null,
+    },
+    {
+      id: 2,
+      name: "Roxy",
+      age: 28,
+      accountType: "Young Professional Savings Account",
+      occupation: "IT Specialist, Back-End Developer(Java)",
+      salary: "$95,370 annually",
+      car: "Owns a car that is still under mortgage for the next 3 years",
+      commuting: "Drives to the office every day, living 5 km from the office",
+      contract: null,
+    },
+    {
+      id: 3,
+      name: "Chad",
+      age: 62,
+      accountType: "Retirement Savings Accout",
+      occupation: "Retired Marine with 20 years of service",
+      pension: "Receives a  pension of 50% of base pay",
+      healthInsurance: "Has health insurance benefits",
+      property: "Owns a  house that is fully paid",
+      contract: null,
+    }
+  ];
+
   // Load PDF content dynamically from the public folder
-  const loadPDFContent = async (user) => {
-    const pdfName = `USER_${user}.pdf`;
+  const loadPDFContent = async (userId) => {
+    const pdfName = `USER_${userId}.pdf`;
     const pdfUrl = `${process.env.PUBLIC_URL}/PDF/${pdfName}`;
 
     try {
@@ -39,12 +75,15 @@ function App() {
       // Pass the Blob to pdfToText for parsing
       const text = await pdfToText(blob);
 
+      // Store the contract text dynamically
+      setContent(text);
+
       if (!text) {
         throw new Error("PDF content is empty or could not be parsed.");
       }
 
       console.log("Extracted PDF content:", text); // Log extracted content
-      setContent(text);
+      
     } catch (error) {
       console.error("Error loading PDF:", error);
 
@@ -62,19 +101,23 @@ function App() {
     }
   };
 
-  const handleUserSelect = (user) => {
+  const handleUserSelect = (userId) => {
     resetChat();
 
+    // Find the user by ID
+    const user = userPersona.find((user) => user.id === userId);
+
     setSelectedUser(user);
-    loadPDFContent(user);
+    loadPDFContent(userId);
 
     // Display greeting message specific to the selected user.
-    const greetingMessage = `Hello, User ${user}! I have loaded your contract details. How can I assist you?`;
+    const greetingMessage = `Hello, ${user.name}! I have loaded your contract details. How can I assist you?`;
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: greetingMessage, isBot: true },
     ]);
   };
+  
 
   useEffect(() => {
     msgEnd.current.scrollIntoView();
@@ -110,9 +153,19 @@ function App() {
       role: message.isBot ? "system" : "user",
       content: message.text,
     }));
+
+    // Add persona and contract context to the conversation
+    const personaContext = JSON.stringify(selectedUser, null, 2);
+    const combinedContext = `${personaContext}\n\nContract Details: \n${content}`;
+
+    conversation.push({
+      role: "system",
+      content: `User Persona and Contract Data: ${combinedContext}`,
+    });
+
     conversation.push({ role: "user", content: text });
 
-    const res = await sendMsgToOpenAI_Chat(conversation, content);
+    const res = await sendMsgToOpenAI_Chat(conversation, combinedContext);
 
     // Add the bot's response to the chat
     setMessages((prevMessages) => [
@@ -153,13 +206,13 @@ function App() {
             <div className="chooseUserTitle">Choose a User</div>
 
             <button className="userBtn" onClick={() => handleUserSelect(1)}>
-              User 1
+              Mia
             </button>
             <button className="userBtn" onClick={() => handleUserSelect(2)}>
-              User 2
+              Roxy
             </button>
             <button className="userBtn" onClick={() => handleUserSelect(3)}>
-              User 3
+              Chad
             </button>
           </div>
         </div>
