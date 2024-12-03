@@ -206,13 +206,13 @@ function App() {
             <div className="chooseUserTitle">Choose a User</div>
 
             <button className="userBtn" onClick={() => handleUserSelect(1)}>
-              User 1
+              Mia
             </button>
             <button className="userBtn" onClick={() => handleUserSelect(2)}>
-              User 2
+              Roxy
             </button>
             <button className="userBtn" onClick={() => handleUserSelect(3)}>
-              User 3
+              Chad
             </button>
           </div>
         </div>
