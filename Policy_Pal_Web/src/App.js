@@ -120,7 +120,7 @@ function App() {
   
 
   useEffect(() => {
-    msgEnd.current.scrollIntoView();
+      msgEnd.current.scrollIntoView();
   }, [messages]);
 
   // Handle message send on 'Enter' key press
@@ -185,6 +185,42 @@ function App() {
     setInput("");
   };
 
+  const [displayedText, setDisplayedText] = useState(""); // State to track the typing effect for the latest bot message
+  const lastMessageRef = useRef(null); // Ref to track the last processed bot message
+
+  useEffect(() => {
+    // Get the latest message from the bot
+    const lastMessage = messages.at(-1);
+  
+    // Only apply the typing effect if the last message is from the bot and it's new
+    if ((lastMessage && lastMessage.isBot && lastMessage !== lastMessageRef.current) || (lastMessage !== '')) {
+      // Mark this message as processed (this ensures typing effect applies only once)
+      lastMessageRef.current = lastMessage;
+  
+      setDisplayedText(''); // Reset displayed text before starting
+  
+      const text = lastMessage.text; // Get the bot's message text
+      let index = 0;
+
+      // Set the first letter immediately
+      setDisplayedText(text[index]);
+      
+      // Start typing effect with an interval to append the next characters
+      const typingInterval = setInterval(() => {
+        if (index < text.length - 1) { // Only update if there are more characters to type
+          setDisplayedText((prev) => prev + text[index] ); // Append next character
+          index++;
+        } else {
+          clearInterval(typingInterval); // Clear interval when typing is complete
+        }
+        
+      }, 5); // Interval of ms for each character
+  
+      // Cleanup the interval when the effect is finished or the component is unmounted
+      return () => clearInterval(typingInterval);
+    }
+  }, [messages]); // Re-run effect whenever `messages` changes
+
   return (
     <div className="App">
       <div className="sidebar">
@@ -218,7 +254,7 @@ function App() {
         </div>
       </div>
 
-      <div className="main">
+      <div className="main" >
         <div className="chats">
           {messages.map((message, i) => (
             <div key={i} className={message.isBot ? "chat bot" : "chat"}>
@@ -227,7 +263,13 @@ function App() {
                 src={message.isBot ? gptImgLogo : userIcon}
                 alt=""
               />
+            {/* Display the typing effect only for the latest bot message */}
+            {message.isBot && message === lastMessageRef.current ? (
+              <p className="txt"><ReactMarkdown children={displayedText} remarkPlugins={[remarkGfm]} /></p>
+            ) : (
               <p className="txt"><ReactMarkdown children={message.text} remarkPlugins={[remarkGfm]} /></p>
+            )}
+         
             </div>
           ))}
           <div ref={msgEnd} />
