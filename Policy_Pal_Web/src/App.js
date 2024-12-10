@@ -120,7 +120,7 @@ function App() {
   
 
   useEffect(() => {
-    msgEnd.current.scrollIntoView();
+      msgEnd.current.scrollIntoView();
   }, [messages]);
 
   // Handle message send on 'Enter' key press
@@ -213,7 +213,8 @@ function App() {
         } else {
           clearInterval(typingInterval); // Clear interval when typing is complete
         }
-      }, 10); // Interval of 25ms for each character
+        
+      }, 5); // Interval of ms for each character
   
       // Cleanup the interval when the effect is finished or the component is unmounted
       return () => clearInterval(typingInterval);
@@ -253,7 +254,7 @@ function App() {
         </div>
       </div>
 
-      <div className="main">
+      <div className="main" >
         <div className="chats">
           {messages.map((message, i) => (
             <div key={i} className={message.isBot ? "chat bot" : "chat"}>
