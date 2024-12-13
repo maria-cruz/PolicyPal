@@ -177,6 +177,24 @@ body {
     justify-content: space-between;
     margin-bottom: 2rem;
 }
+textarea {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1.5em;
+    font-family: "Arial", sans-serif;
+    border-radius: 20px;
+    //border: 1px solid #ccc;
+    border: none;
+    outline: none;
+    resize: none; /* Prevent manual resizing */
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+    min-height: 40px;
+    max-height: 120px;
+    line-height: 0.8;
+    background-color: #f4f4f4;
+    color: #333;
+}
 
 .inp input {
     background: transparent;

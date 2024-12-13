@@ -124,9 +124,21 @@ function App() {
   }, [messages]);
 
   // Handle message send on 'Enter' key press
+  /*
   const handleEnter = async (e) => {
     if (e.key === "Enter") await handleSend();
-  };
+  }; */
+
+  const handleKeyDown = (e) => {
+    // If Enter is pressed without Shift, send the message
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    } else if (e.key === "Enter" && e.shiftKey) {
+      // Add newline when Shift+Enter is pressed
+      setInput(prevInput => prevInput + "\n");
+    }
+  }
 
   // Handle sending a message
   const handleSend = async () => {
@@ -277,13 +289,15 @@ function App() {
 
         <div className="chatFooter">
           <div className="inp">
-            <input
-              type="text"
-              placeholder="Send a message"
-              value={input}
-              onKeyDown={handleEnter}
-              onChange={(e) => setInput(e.target.value)}
-            />
+          <textarea
+  //type="text"
+  placeholder="Send a message"
+  value={input}
+  onKeyDown={handleKeyDown} // Keep the event listener for keydown
+  onChange={(e) => setInput(e.target.value)} // Update input value
+  rows={3} // Add a row attribute for better multi-line input behavior
+  style={{whiteSpace: "pre-wrap", wordWrap: "break-word", resize: "none"}} // Prevent manual resizing for better user experience
+/>
             <button className="send" onClick={handleSend}>
               <img src={sendBtn} alt="Send" />
             </button>
