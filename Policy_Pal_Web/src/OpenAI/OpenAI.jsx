@@ -212,8 +212,8 @@ function Chatgpt() {
         <div className="upperSide">
           <div className="upperSideTop">
             <img src={gptLogo} alt="logo" className="logo" />
-            <span className="brand">Welcome to Policy Pal</span>
-            <div className="description">Simplifying your Contracts</div>
+            <span className="brand">Welcome to Buddie</span>
+            <div className="description">Bank-bot that Understands your financial Dreams, Decisions, Ideas, and Expectations.</div>
             <button className="logoutBtn" onClick={handleLogout}>
               Log Out
             </button>
