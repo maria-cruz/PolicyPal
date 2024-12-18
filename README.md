@@ -27,6 +27,8 @@
     Your site is now running at `http://localhost:3000`!
 
 
-## 🧐  PolicyPal
+## 🧐  Buddie
+Bank-bot that Understands your financial Dreams, Decisions, Ideas, and Expectations.
+
 This application allows users to read bank policy documents (e.g., terms and conditions, account agreements, privacy policies) stored in remote storage. The app leverages OpenAI's GPT model to intelligently process and analyze the content of these policies, allowing users to ask questions and get automated answers.
 
