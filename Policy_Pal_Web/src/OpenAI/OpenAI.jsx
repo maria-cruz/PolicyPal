@@ -97,6 +97,8 @@ function Chatgpt() {
     if (username) {
       handleUserSelect(username);
     }
+
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const handleUserSelect = (username) => {
