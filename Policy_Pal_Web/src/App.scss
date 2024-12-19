@@ -4,39 +4,39 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+ 
 html {
-    font-size: 62.5%; 
+    font-size: 62.5%;
 }
-
+ 
 body {
     background: #fff; /* Changed background to white */
     color: #333; /* Changed text color to dark gray for contrast */
     font-family: 'Poppins', sans-serif;
-    overflow: hidden; 
+    overflow: hidden;
 }
-
+ 
 /* App container */
 .App {
     min-height: 100vh;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
 }
-
+ 
 /* Sidebar styles */
 .sidebar {
     flex: 3;
     background: #f4f4f4;
-    border-right: 1px solid #ddd; 
+    border-right: 1px solid #ddd;
     padding: 2rem;
     overflow-y: auto;
 }
-
+ 
 /* Main Content Area */
 .main {
     flex: 9;
-    background: #f9f9f9; 
+    background: #f9f9f9;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -45,24 +45,58 @@ body {
     min-height: 100vh;
     overflow-y: auto;
 }
-
+ 
 /* Brand & logo */
 .logo {
-    height: 3rem;
-    margin-right: 1rem;
+    display: block;
+    height: 20rem;
     background-color: black;
-    border-radius: 1rem;
+    border-radius: 2rem;
 }
 
 .brand {
+    font-size: 3rem;
+    color: #333; /* Darker text for visibility */
+    font-weight: 600;
+    text-align: center;
+
+}
+
+/* Brand & logo */
+.userlogo {
+    display: block;
+    height: 15rem;
+    margin: auto;
+    background-color: white;
+    border-radius: 3rem;
+
+}
+
+.userinfo {
     font-size: 2.4rem;
     color: #333; /* Darker text for visibility */
     font-weight: 600;
+    text-align: center;
+
+}
+.userborder {
+    border: '1px solid #ccc';
+    padding: '10px';
+    margin: '10px';
+    font-size: 10rem;
 }
 
+.userDescription {
+    font-size: 1.5rem;
+}
+
+.userDescription h2 {
+    text-align: center;
+}
+ 
 /* Button Styles */
 .midBtn, .userBtn, .query, .uploadBtn {
-    background: #5A4BFF; 
+    background: #5A4BFF;
     color: white;
     font-size: 1.6rem;
     padding: 1.5rem;
@@ -78,24 +112,24 @@ body {
     align-items: center;
     transition: all 0.3s ease;
 }
-
+ 
 /* Hover Effects */
 .midBtn:hover, .userBtn:hover, .query:hover, .uploadBtn:hover {
     background: #4e42d1;
     transform: translateY(-2px);
 }
-
+ 
 /* User Buttons */
 .userBtn {
-    background: #28a745; 
+    background: #28a745;
     font-size: 1.8rem;
     padding: 1.2rem;
 }
-
+ 
 .userBtn:hover {
     background: #218838;
 }
-
+ 
 /* Query and upload buttons */
 .query {
     background: #3a3a44;
@@ -105,39 +139,63 @@ body {
     border: 1px solid rgba(98, 98, 98, 1);
     transition: background 0.3s ease, transform 0.2s ease;
 }
-
+ 
 .query:hover {
     background: #5a5a66;
     transform: translateY(-2px);
 }
-
+ 
 .uploadBtn {
     background: #259125;
     padding: 1rem;
     font-size: 1.6rem;
 }
-
+ 
+/* Chatbox Layout Styles */
+.chatWindow {
+    position: fixed;
+    right: 2rem;
+    bottom: 12rem; /* Chat window stays below the bubble */
+    width: 50rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 40rem; /* Fixed height */
+    transform: translateY(20px);
+    //opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease, bottom 0.3s ease; /* Smooth transition for position */
+}
+ 
+/* When the chat window is expanded, position it above the bubble */
+.chatWindow.open {
+    bottom: 70px; /* Moves the chat window above the bubble */
+    opacity: 1;
+    transform: translateY(0);
+}
+ 
 /* Chat Area */
 .chats {
-    width: 100%;
-    max-width: 70rem;
-    height: calc(100vh - 25rem); 
     overflow-y: auto;
-    scroll-behavior: smooth;
+    max-height: 70%;
     margin-bottom: 2rem;
+    padding-right: 1rem;
 }
-
+ 
 .chat {
     display: flex;
-    margin-bottom: 2rem;
     padding: 1.5rem 2rem;
-    font-size: 1.4rem;
-    max-width: 80%;
-    background: #f4f4f4; 
+    font-size: 1.2rem;
+    max-width: 95%;
+    background: #f4f4f4;
     border-radius: 8px;
-    align-items: flex-start;
+    margin-bottom: 1.5rem;
 }
-
+ 
 .chatImg {
     width: 3.5rem;
     height: 3.5rem;
@@ -145,16 +203,52 @@ body {
     margin-right: 1.5rem;
     object-fit: cover;
 }
-
+ 
 .bot {
-    background: #e1e1e1; /*
-
-.user {
-    background: #5A4BFF; 
-    align-self: flex-end; 
-    color: white; /* Ensures user text is white */
+    background: #e1e1e1;
 }
-
+ 
+/* Chat Bubble (Fixed Size) */
+.chatBubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #175d00;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 9999;
+    //transition: none; /* No transition on hover */
+    transition: background-coloer 0.3s ease;
+}
+ 
+.chatBubble:hover {
+    background-color: #b3b7b1;
+    transform: translateY(-2px);
+}
+ 
+/* Chat Bubble remains fixed size */
+.chatBubble.open {
+    width: 60px; /* No change in size */
+    height: 60px; /* No change in size */
+}
+ 
+/* Chat Icon inside the bubble */
+.chatIcon {
+    width: 30px;
+    height: 30px;
+}
+ 
+.chatIcon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 2rem;
+}
+ 
 /* Footer */
 .chatFooter {
     margin-top: auto;
@@ -164,7 +258,7 @@ body {
     width: 100%;
     padding-top: 2rem;
 }
-
+ 
 /* Text Input */
 .inp {
     width: 100%;
@@ -177,13 +271,13 @@ body {
     justify-content: space-between;
     margin-bottom: 2rem;
 }
+ 
 textarea {
     width: 100%;
     padding: 12px 16px;
     font-size: 1.5em;
     font-family: "Arial", sans-serif;
     border-radius: 20px;
-    //border: 1px solid #ccc;
     border: none;
     outline: none;
     resize: none; /* Prevent manual resizing */
@@ -195,7 +289,7 @@ textarea {
     background-color: #f4f4f4;
     color: #333;
 }
-
+ 
 .inp input {
     background: transparent;
     border: none;
@@ -206,11 +300,11 @@ textarea {
     width: 80%;
     border-radius: 8px;
 }
-
+ 
 .inp input:focus {
     border: 1px solid #5a4bff;
 }
-
+ 
 .send {
     background: transparent;
     border: none;
@@ -218,164 +312,166 @@ textarea {
     cursor: pointer;
     transition: background 0.3s ease;
 }
-
+ 
 .send img {
     width: 2rem;
     height: 2rem;
 }
-
+ 
 .send:hover {
     background: #5A4BFF;
     border-radius: 50%;
 }
-
+ 
 /* Styling Text */
 .txt {
     color: #333; /* Dark text for visibility */
     line-height: 2.4rem;
 }
-
+ 
 /* General Layout & Adjustments */
 .main {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
+ 
 .chatFooter > p {
     margin: 2rem 0;
     font-size: 1.2rem;
     color: #666; /* Lighter gray for footer text */
     text-align: center;
 }
-
-.description {
-    font-size: 16px;
+ 
+.description p {
+    font-size: 2.5rem;
+    text-align: center;
 }
-
+ 
 .upperSideTop {
     margin-bottom: 40px;
 }
-
+ 
 /* Media Queries for Responsiveness */
-
+ 
 /* Tablet or Smaller */
 @media (max-width: 1024px) {
     .App {
-        flex-direction: column; 
+        flex-direction: column;
     }
-
+ 
     .sidebar {
         flex: 1;
         padding: 1.5rem;
         border-right: none;
     }
-
+ 
     .main {
         flex: 1;
         padding: 2rem;
     }
-
+ 
     .logo {
         height: 2.5rem;
       
     }
-
-    .brand {
-        font-size: 2rem;
+ 
+    .brand p {
+        font-size: 3rem;
+        text-align: center;
     }
-
+ 
     .midBtn, .userBtn, .query, .uploadBtn {
         width: 100%;
-        max-width: 100%; 
+        max-width: 100%;
     }
-
+ 
     .chats {
         max-width: 100%;
         margin-bottom: 1rem;
     }
-
+ 
     .inp {
         max-width: 100%;
     }
-
+ 
     .txt {
         font-size: 1.4rem;
     }
 }
-
+ 
 /* Mobile Screens */
 @media (max-width: 768px) {
     .sidebar {
         display: none;
     }
-
+ 
     .main {
         padding: 1rem;
     }
-
+ 
     .midBtn, .userBtn, .query, .uploadBtn {
-        max-width: 100%; 
+        max-width: 100%;
         padding: 1rem;
         font-size: 1.4rem;
     }
-
+ 
     .chatFooter > p {
         font-size: 1rem;
     }
-
+ 
     .inp input {
         font-size: 1.4rem;
         padding: 1rem;
     }
-
+ 
     .send img {
         width: 1.6rem;
         height: 1.6rem;
     }
-
+ 
     .txt {
         font-size: 1.4rem;
     }
 }
-
+ 
 /* Mobile or Smaller */
 @media (max-width: 480px) {
     .logo {
         height: 2rem;
     }
-
+ 
     .brand {
         font-size: 1.8rem;
     }
-
+ 
     .midBtn, .userBtn, .query, .uploadBtn {
         font-size: 1.2rem;
         padding: 1rem;
     }
-
+ 
     .chats {
-        height: calc(100vh - 10rem); 
+        height: calc(100vh - 10rem);
     }
-
+ 
     .inp {
         padding: 0.8rem;
     }
-
+ 
     .txt {
         font-size: 1.2rem;
     }
 }
-
+ 
 .description {
     font-size: 14px;
     margin-left: 40px;
 }
-
+ 
 .chooseUserTitle {
     font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 10px;  
+    margin-bottom: 10px;
 }
 
 
