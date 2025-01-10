@@ -19,37 +19,23 @@ body {
 /* App container */
 .App {
     min-height: 100vh;
-    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    padding: 10px 40px;
 }
  
 /* Sidebar styles */
 .sidebar {
     flex: 3;
-    background: #f4f4f4;
-    border-right: 1px solid #ddd;
     padding: 2rem;
     overflow-y: auto;
 }
  
-/* Main Content Area */
-.main {
-    flex: 9;
-    background: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 3rem 5rem;
-    min-height: 100vh;
-    overflow-y: auto;
-}
- 
+
 /* Brand & logo */
 .logo {
     display: block;
-    height: 20rem;
+    height: 50px;
     background-color: black;
     border-radius: 2rem;
 }
@@ -494,3 +480,28 @@ textarea {
     background-color: #003b6b; 
   }
   
+  .sidebar{
+    display: flex;
+    justify-content: center;
+  }
+  
+  .text-container {
+    font-size: 10px;
+    font-weight: bold;
+    color: #333;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+      padding: 10px;
+    }
+  }
+
+  .appTitle{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+  }
