@@ -22,12 +22,16 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 10px 40px;
+    height: 500px;
+    overflow-y: scroll;
+    display: flex;
+    justify-content: center;
 }
  
 /* Sidebar styles */
 .sidebar {
     flex: 3;
-    padding: 2rem;
+    padding: 40px 60px;
     overflow-y: auto;
 }
  
@@ -589,4 +593,9 @@ textarea {
         }
       }
     }
+  }
+
+  .appWrapper{
+    max-width: 1300px;
+    width: 100%;
   }
