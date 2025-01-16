@@ -40,7 +40,7 @@ function Chatgpt() {
         "Lives 300 meters from the school and rents an apartment for $1,000 per month",
       contract: null,
       profilePicture: userIconMia,
-      accountNumber: "123-456-789"
+      accountNumber: "123-456-789",
     },
     {
       id: 2,
@@ -54,7 +54,7 @@ function Chatgpt() {
       contract: null,
       profilePicture: userIconRoxy,
       accountNumber: "000-425-145",
-      balance:"12500.50"
+      balance: "12500.50",
     },
     {
       id: 3,
@@ -67,7 +67,7 @@ function Chatgpt() {
       property: "Owns a  house that is fully paid",
       contract: null,
       profilePicture: userIconChad,
-      accountNumber: "131-056-309"
+      accountNumber: "131-056-309",
     },
   ];
 
@@ -278,162 +278,164 @@ function Chatgpt() {
 
   return (
     <div className="App">
-      <div className="appTitle">
-        <img src={gptLogo} alt="logo" className="logo" />
-        <div className={`text-container ${isVisible ? "visible" : ""}`}>
-          Bank-bot that Understands financial Dreams, Decisions, Ideas, and
-          Expectations
-        </div>
-      </div>
-      <div className="sidebar">
-        <div className="upperSide">
-          <div className="upperSideTop">
-            {loggedInUser ? (
-              <div className="userborder">
-                <img
-                  className="userlogo"
-                  src={loggedInUser.profilePicture}
-                  alt="Profile"
-                />
-              </div>
-            ) : (
-              <p>Please log in to see your details.</p>
-            )}
-            <button className="logoutBtn" onClick={handleLogout}>
-              Log Out
-            </button>
+      <div className="appWrapper">
+        <div className="appTitle">
+          <img src={gptLogo} alt="logo" className="logo" />
+          <div className={`text-container ${isVisible ? "visible" : ""}`}>
+            Bank-bot that Understands financial Dreams, Decisions, Ideas, and
+            Expectations
           </div>
         </div>
-        <div className="client-bank-info-container">
-          <h2>Client Banking Information</h2>
-          <div className="account-summary">
-            <div className="info-group">
-              <label>Account Holder:</label>
-              <p>{clientData.name}</p>
-            </div>
-            <div className="info-group">
-              <label>Age:</label>
-              <p>{loggedInUser.age}</p>
-            </div>
-            <div className="info-group">
-              <label>Account Number:</label>
-              <p>{clientData.accountNumber}</p>
-            </div>
-
-            <div className="info-group">
-              <label>Account Type:</label>
-              <p>{clientData.accountType}</p>
-            </div>
-
-            <div className="info-group">
-              <label>Account Balance:</label>
-              <p>${clientData.balance.toFixed(2)}</p>
-            </div>
-          </div>
-
-          <div className="transactions">
-            <h3>Recent Transactions</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Description</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {clientData.transactions.map((transaction, index) => (
-                  <tr key={index}>
-                    <td>{transaction.date}</td>
-                    <td>{transaction.description}</td>
-                    <td
-                      className={
-                        transaction.amount < 0 ? "negative" : "positive"
-                      }
-                    >
-                      ${transaction.amount.toFixed(2)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div className="main">
-        <button className="logoutBtn" onClick={handleLogout}>
-          Log Out
-        </button>
-        <div
-          className={`chatBubble ${isChatOpen ? "open" : ""}`}
-          onClick={toggleChat}
-        >
-          <div className="chatIcon">
-            <img src={gptImgLogo} alt="Chat Icon" />
-          </div>
-        </div>
-
-        {isChatOpen && (
-          <div className={"chatWindow"}>
-            <div className="chats">
-              {messages.map((message, i) => (
-                <div key={i} className={message.isBot ? "chat bot" : "chat"}>
+        <div className="sidebar">
+          <div className="upperSide">
+            <div className="upperSideTop">
+              {loggedInUser ? (
+                <div className="userborder">
                   <img
-                    className="chatImg"
-                    src={
-                      message.isBot ? gptImgLogo : loggedInUser.profilePicture
-                    }
-                    alt=""
+                    className="userlogo"
+                    src={loggedInUser.profilePicture}
+                    alt="Profile"
                   />
-                  {message.isBot && message === lastMessageRef.current ? (
-                    <p className="txt">
-                      <ReactMarkdown
-                        children={displayedText.replace("HHllo", "Hello")}
-                        remarkPlugins={[remarkGfm]}
-                      />
-                    </p>
-                  ) : (
-                    <p className="txt">
-                      <ReactMarkdown
-                        children={message.text}
-                        remarkPlugins={[remarkGfm]}
-                      />
-                    </p>
-                  )}
                 </div>
-              ))}
-              <div ref={msgEnd} />
-            </div>
-
-            <div className="chatFooter">
-              <div className="inp">
-                <textarea
-                  placeholder="Send a message"
-                  value={input}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSend();
-                    } else if (e.key === "Enter" && e.shiftKey) {
-                      setInput((prevInput) => prevInput + "\n");
-                    }
-                  }}
-                  onChange={(e) => setInput(e.target.value)}
-                  rows={3}
-                  style={{
-                    whiteSpace: "pre-wrap",
-                    wordWrap: "break-word",
-                    resize: "none",
-                  }}
-                />
-                <button className="send" onClick={handleSend}>
-                  <img src={sendBtn} alt="Send" />
-                </button>
-              </div>
+              ) : (
+                <p>Please log in to see your details.</p>
+              )}
+              <button className="logoutBtn" onClick={handleLogout}>
+                Log Out
+              </button>
             </div>
           </div>
-        )}
+          <div className="client-bank-info-container">
+            <h2>Client Banking Information</h2>
+            <div className="account-summary">
+              <div className="info-group">
+                <label>Account Holder:</label>
+                <p>{clientData.name}</p>
+              </div>
+              <div className="info-group">
+                <label>Age:</label>
+                <p>{loggedInUser.age}</p>
+              </div>
+              <div className="info-group">
+                <label>Account Number:</label>
+                <p>{clientData.accountNumber}</p>
+              </div>
+
+              <div className="info-group">
+                <label>Account Type:</label>
+                <p>{clientData.accountType}</p>
+              </div>
+
+              <div className="info-group">
+                <label>Account Balance:</label>
+                <p>${clientData.balance.toFixed(2)}</p>
+              </div>
+            </div>
+
+            <div className="transactions">
+              <h3>Recent Transactions</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clientData.transactions.map((transaction, index) => (
+                    <tr key={index}>
+                      <td>{transaction.date}</td>
+                      <td>{transaction.description}</td>
+                      <td
+                        className={
+                          transaction.amount < 0 ? "negative" : "positive"
+                        }
+                      >
+                        ${transaction.amount.toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div className="main">
+          <button className="logoutBtn" onClick={handleLogout}>
+            Log Out
+          </button>
+          <div
+            className={`chatBubble ${isChatOpen ? "open" : ""}`}
+            onClick={toggleChat}
+          >
+            <div className="chatIcon">
+              <img src={gptImgLogo} alt="Chat Icon" />
+            </div>
+          </div>
+
+          {isChatOpen && (
+            <div className={"chatWindow"}>
+              <div className="chats">
+                {messages.map((message, i) => (
+                  <div key={i} className={message.isBot ? "chat bot" : "chat"}>
+                    <img
+                      className="chatImg"
+                      src={
+                        message.isBot ? gptImgLogo : loggedInUser.profilePicture
+                      }
+                      alt=""
+                    />
+                    {message.isBot && message === lastMessageRef.current ? (
+                      <p className="txt">
+                        <ReactMarkdown
+                          children={displayedText.replace("HHllo", "Hello")}
+                          remarkPlugins={[remarkGfm]}
+                        />
+                      </p>
+                    ) : (
+                      <p className="txt">
+                        <ReactMarkdown
+                          children={message.text}
+                          remarkPlugins={[remarkGfm]}
+                        />
+                      </p>
+                    )}
+                  </div>
+                ))}
+                <div ref={msgEnd} />
+              </div>
+
+              <div className="chatFooter">
+                <div className="inp">
+                  <textarea
+                    placeholder="Send a message"
+                    value={input}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSend();
+                      } else if (e.key === "Enter" && e.shiftKey) {
+                        setInput((prevInput) => prevInput + "\n");
+                      }
+                    }}
+                    onChange={(e) => setInput(e.target.value)}
+                    rows={3}
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      wordWrap: "break-word",
+                      resize: "none",
+                    }}
+                  />
+                  <button className="send" onClick={handleSend}>
+                    <img src={sendBtn} alt="Send" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
