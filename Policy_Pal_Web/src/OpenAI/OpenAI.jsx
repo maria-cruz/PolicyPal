@@ -40,6 +40,7 @@ function Chatgpt() {
         "Lives 300 meters from the school and rents an apartment for $1,000 per month",
       contract: null,
       profilePicture: userIconMia,
+      accountNumber: "123-456-789"
     },
     {
       id: 2,
@@ -52,6 +53,8 @@ function Chatgpt() {
       commuting: "Drives to the office every day, living 5 km from the office",
       contract: null,
       profilePicture: userIconRoxy,
+      accountNumber: "000-425-145",
+      balance:"12500.50"
     },
     {
       id: 3,
@@ -64,6 +67,7 @@ function Chatgpt() {
       property: "Owns a  house that is fully paid",
       contract: null,
       profilePicture: userIconChad,
+      accountNumber: "131-056-309"
     },
   ];
 
@@ -259,6 +263,19 @@ function Chatgpt() {
     return () => clearTimeout(timer);
   }, []);
 
+  const clientData = {
+    name: loggedInUser.name,
+    accountNumber: loggedInUser.accountNumber,
+    accountType: loggedInUser.accountType,
+    balance: 12500.5,
+    transactions: [
+      { date: "2025-01-10", description: "Deposit", amount: 2000 },
+      { date: "2025-01-08", description: "ATM Withdrawal", amount: -150 },
+      { date: "2025-01-05", description: "Transfer to Savings", amount: -1000 },
+      { date: "2025-01-01", description: "Direct Deposit", amount: 3000 },
+    ],
+  };
+
   return (
     <div className="App">
       <div className="appTitle">
@@ -271,7 +288,6 @@ function Chatgpt() {
       <div className="sidebar">
         <div className="upperSide">
           <div className="upperSideTop">
-            <p className="userinfo">Profile Information</p>
             {loggedInUser ? (
               <div className="userborder">
                 <img
@@ -279,21 +295,6 @@ function Chatgpt() {
                   src={loggedInUser.profilePicture}
                   alt="Profile"
                 />
-                <div className="userDescription">
-                  <h2> {loggedInUser.name}</h2>
-                  <div className="userInfo">
-                    <p>
-                      <strong>Type of Contract:</strong>{" "}
-                      {loggedInUser.accountType}
-                    </p>
-                    <p>
-                      <strong>Age:</strong> {loggedInUser.age}
-                    </p>
-                    <p>
-                      <strong>Status:</strong> {loggedInUser.status}
-                    </p>
-                  </div>
-                </div>
               </div>
             ) : (
               <p>Please log in to see your details.</p>
@@ -301,6 +302,61 @@ function Chatgpt() {
             <button className="logoutBtn" onClick={handleLogout}>
               Log Out
             </button>
+          </div>
+        </div>
+        <div className="client-bank-info-container">
+          <h2>Client Banking Information</h2>
+          <div className="account-summary">
+            <div className="info-group">
+              <label>Account Holder:</label>
+              <p>{clientData.name}</p>
+            </div>
+            <div className="info-group">
+              <label>Age:</label>
+              <p>{loggedInUser.age}</p>
+            </div>
+            <div className="info-group">
+              <label>Account Number:</label>
+              <p>{clientData.accountNumber}</p>
+            </div>
+
+            <div className="info-group">
+              <label>Account Type:</label>
+              <p>{clientData.accountType}</p>
+            </div>
+
+            <div className="info-group">
+              <label>Account Balance:</label>
+              <p>${clientData.balance.toFixed(2)}</p>
+            </div>
+          </div>
+
+          <div className="transactions">
+            <h3>Recent Transactions</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clientData.transactions.map((transaction, index) => (
+                  <tr key={index}>
+                    <td>{transaction.date}</td>
+                    <td>{transaction.description}</td>
+                    <td
+                      className={
+                        transaction.amount < 0 ? "negative" : "positive"
+                      }
+                    >
+                      ${transaction.amount.toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
